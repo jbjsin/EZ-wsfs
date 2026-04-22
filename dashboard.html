@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>ezSync Advanced Dashboard v0.0.5</title>
+  <style>
+    :root {
+      --primary-color: #4CAF50;
+      --error-color: #f44336;
+      --bg-color: #f8f9fa;
+      --card-bg: #ffffff;
+      --border-color: #dee2e6;
+    }
+    body { font-family: 'Segoe UI', sans-serif; padding: 30px; background-color: var(--bg-color); color: #333; margin: 0; }
+    .main-container { max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+    
+    /* 상단 50:50 분할 레이아웃 */
+    .top-row { display: flex; gap: 20px; align-items: stretch; }
+    .config-section, .history-dialog { 
+      flex: 1; 
+      background: var(--card-bg); 
+      padding: 20px; 
+      border-radius: 12px; 
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      border: 1px solid var(--border-color);
+      box-sizing: border-box;
+    }
+    
+    /* 창이 좁아질 경우 세로 배치로 전환 (반응형) */
+    @media (max-width: 768px) {
+      .top-row { flex-direction: column; }
+    }
+
+    h3 { margin-top: 0; font-size: 1.1rem; border-bottom: 2px solid var(--bg-color); padding-bottom: 10px; margin-bottom: 15px; }
+    .form-group { margin-bottom: 12px; }
+    label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px; color: #666; }
+    input { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 0.9rem; box-sizing: border-box; }
+
+    /* 히스토리 다이얼로그 스타일 */
+    .history-log-container { 
+      height: 280px; 
+      overflow-y: auto; 
+      background: #fafafa; 
+      border-radius: 6px; 
+      padding: 10px; 
+      font-family: 'Consolas', monospace; 
+      font-size: 0.85rem;
+      border: 1px inset #eee;
+    }
+    .log-item { padding: 4px 0; border-bottom: 1px solid #f0f0f0; display: flex; gap: 8px;}
+    .log-time { color: #888; flex-shrink: 0;}
+
+    /* 제어 영역 */
+    .control-panel { display: flex; gap: 10px; }
+    button { flex: 1; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: opacity 0.2s; color: white; }
+    .btn-start { background-color: var(--primary-color); }
+    .btn-stop { background-color: var(--error-color); }
+    .btn-reset { background-color: #6c757d; }
+
+    .status-footer { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 15px; background: #343a40; color: #fff; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <div class="top-row">
+      <section class="config-section">
+        <h3>exshare 파일 동기화 크롬 익스텐션 (v0.0.5)</h3>
+        <div class="form-group">
+          <label>ezShare URL</label>
+          <input type="text" id="urlInput" value="http://localhost:8080">
+        </div>
+        <div class="form-group">
+          <label>저장 하위 폴더 (다운로드 폴더 내부 위치) </label>
+          <input type="text" id="folderInput" value="Fuji_Photos">
+        </div>
+        <div class="form-group">
+          <label>히스토리 저장 세션 이름</label>
+          <input type="text" id="historyKeyInput" value="session_01">
+        </div>
+        <div class="form-group">
+          <label>동기화 간격 (ms)</label>
+          <input type="number" id="intervalInput" value="3000">
+        </div>
+      </section>
+
+      <section class="history-dialog">
+        <h3>현재 세션 로그</h3>
+        <div id="historyLog" class="history-log-container">
+          </div>
+      </section>
+    </div>
+
+    <div class="control-panel">
+      <button id="toggleBtn" class="btn-start">동기화 시작</button>
+      <button id="resetHistoryBtn" class="btn-reset">로그 초기화</button>
+    </div>
+
+    <footer class="status-footer">
+      <span id="connStatus">네트워크: 대기 중</span>
+      <span id="currFile">처리 중: 없음</span>
+    </footer>
+  </div>
+  <script src="dashboard.js"></script>
+</body>
+</html>

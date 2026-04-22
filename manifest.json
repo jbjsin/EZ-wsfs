@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "ezShare Auto Sync Dashboard",
+  "version": "0.0.5",
+  "description": "ezShare WiFi SD 카드의 사진을 실시간으로 감시하고 지정된 폴더에 자동 저장합니다.",
+  "permissions": [
+    "downloads",
+    "storage"
+  ],
+  "action": {
+    "default_title": "ezSync 대시보드 열기"
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+}
